@@ -1479,7 +1479,7 @@ static NSDateFormatterStyle         __timeStyle             = NSDateFormatterSho
     }
 
     NSString *preString = [s componentsJoinedByString:@", "];
-    NSString *string = interval < 0 ? [NSString stringWithFormat:@"%@ Ago", preString] : [NSString stringWithFormat:@"In %@", preString];
+    NSString *string = interval < 0 ? [NSString stringWithFormat:@"%@ Ago", preString] : [NSString stringWithFormat:@"%@ remaining", preString];
 	[[NSDate sharedRecursiveLock] unlock];
     return string;
 }
