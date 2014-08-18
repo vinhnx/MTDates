@@ -1409,37 +1409,37 @@ static NSDateFormatterStyle         __timeStyle             = NSDateFormatterSho
 
     NSInteger months = floor(absInterval / (float)MTDateConstantSecondsInMonth);
     if (months > 0) {
-        [s appendFormat:@"%ld months, ", (long)months];
+        [s appendFormat:NSLocalizedString(@"%ld months, ", nil), (long)months];
         absInterval -= months * MTDateConstantSecondsInMonth;
     }
 
     NSInteger days = floor(absInterval / (float)MTDateConstantSecondsInDay);
     if (days > 0) {
-        [s appendFormat:@"%ld days, ", (long)days];
+        [s appendFormat:NSLocalizedString(@"%ld days, ", nil), (long)days];
         absInterval -= days * MTDateConstantSecondsInDay;
     }
 
     NSInteger hours = floor(absInterval / (float)MTDateConstantSecondsInHour);
     if (hours > 0) {
-        [s appendFormat:@"%ld hours, ", (long)hours];
+        [s appendFormat:NSLocalizedString(@"%ld hours, ", nil), (long)hours];
         absInterval -= hours * MTDateConstantSecondsInHour;
     }
 
     NSInteger minutes = floor(absInterval / (float)MTDateConstantSecondsInMinute);
     if (minutes > 0) {
-        [s appendFormat:@"%ld minutes, ", (long)minutes];
+        [s appendFormat:NSLocalizedString(@"%ld minutes, ", nil), (long)minutes];
         absInterval -= minutes * MTDateConstantSecondsInMinute;
     }
 
     NSInteger seconds = absInterval;
     if (seconds > 0) {
-        [s appendFormat:@"%ld seconds, ", (long)seconds];
+        [s appendFormat:NSLocalizedString(@"%ld seconds, ", nil), (long)seconds];
     }
 
     NSString *preString = [s stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" ,"]];
     NSString *str = (interval < 0 ?
-                     [NSString stringWithFormat:@"%@ before", preString] :
-                     [NSString stringWithFormat:@"%@ after", preString]);
+                     [NSString stringWithFormat:NSLocalizedString(@"%@ before", nil), preString] :
+                     [NSString stringWithFormat:NSLocalizedString(@"%@ after", nil), preString]);
 	[[NSDate sharedRecursiveLock] unlock];
     return str;
 }
@@ -1453,33 +1453,33 @@ static NSDateFormatterStyle         __timeStyle             = NSDateFormatterSho
 
     NSInteger months = floor(absInterval / (float)MTDateConstantSecondsInMonth);
     if (months > 0) {
-        NSString *formatString = months == 1 ? @"%ld month" : @"%ld months";
+        NSString *formatString = months == 1 ? NSLocalizedString(@"%ld month", nil) : NSLocalizedString(@"%ld months", nil);
         [s addObject:[NSString stringWithFormat:formatString, (long)months]];
         absInterval -= months * MTDateConstantSecondsInMonth;
     }
 
     NSInteger days = floor(absInterval / (float)MTDateConstantSecondsInDay);
     if (days > 0) {
-        NSString *formatString = days == 1 ? @"%ld day" : @"%ld days";
+        NSString *formatString = days == 1 ? NSLocalizedString(@"%ld day", nil) : NSLocalizedString(@"%ld days", nil);
         [s addObject:[NSString stringWithFormat:formatString, (long)days]];
         absInterval -= days * MTDateConstantSecondsInDay;
     }
 
     NSInteger hours = floor(absInterval / (float)MTDateConstantSecondsInHour);
     if (hours > 0) {
-        NSString *formatString = hours == 1 ? @"%ld hour" : @"%ld hours";
+        NSString *formatString = hours == 1 ? NSLocalizedString(@"%ld hour", nil) : NSLocalizedString(@"%ld hours", nil);
         [s addObject:[NSString stringWithFormat:formatString, (long)hours]];
         absInterval -= hours * MTDateConstantSecondsInHour;
     }
 
     NSInteger minutes = floor(absInterval / (float)MTDateConstantSecondsInMinute);
     if (minutes > 0) {
-        NSString *formatString = minutes == 1 ? @"%ld minute" : @"%ld minutes";
+        NSString *formatString = minutes == 1 ? NSLocalizedString(@"%ld minute", nil) : NSLocalizedString(@"%ld minutes", nil);
         [s addObject:[NSString stringWithFormat:formatString, (long)minutes]];
     }
 
     NSString *preString = [s componentsJoinedByString:@", "];
-    NSString *string = interval < 0 ? [NSString stringWithFormat:@"%@ ago", preString] : [NSString stringWithFormat:@"%@ remaining", preString];
+    NSString *string = interval < 0 ? [NSString stringWithFormat:NSLocalizedString(@"%@ ago", nil), preString] : [NSString stringWithFormat:NSLocalizedString(@"%@ remaining", nil), preString];
 	[[NSDate sharedRecursiveLock] unlock];
     return string;
 }
