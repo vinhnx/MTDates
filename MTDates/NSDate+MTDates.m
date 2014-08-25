@@ -38,7 +38,7 @@ static NSDateFormatterStyle         __timeStyle             = NSDateFormatterSho
 {
 	[[NSDate sharedRecursiveLock] lock];
     [self mt_prepareDefaults];
-
+    
     if (!__formatter) {
         __formatter           = [[NSDateFormatter alloc] init];
         __formatter.calendar  = [self mt_calendar];
@@ -47,7 +47,7 @@ static NSDateFormatterStyle         __timeStyle             = NSDateFormatterSho
         [__formatter setDateStyle:__dateStyle];
         [__formatter setTimeStyle:__timeStyle];
     }
-
+    
     NSDateFormatter *formatter = __formatter;
     [[NSDate sharedRecursiveLock] unlock];
     return formatter;
@@ -109,13 +109,13 @@ static NSDateFormatterStyle         __timeStyle             = NSDateFormatterSho
         [[NSDate sharedRecursiveLock] unlock];
         return nil;
     }
-
+    
     NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
     [formatter setCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar]];
     [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-
+    
     NSArray *formatsToTry = @[ @"yyyy-MM-dd'T'HH:mm.ss.SSS'Z'", @"yyyy-MM-dd HH:mm:ss ZZZ", @"yyyy-MM-dd HH:mm:ss Z", @"yyyy-MM-dd HH:mm:ss", @"yyyy-MM-dd'T'HH:mm:ss'Z'", @"yyyy-MM-dd" ];
-
+    
     NSDate *result = nil;
     for (NSString *format in formatsToTry) {
         [formatter setDateFormat:format];
@@ -371,8 +371,8 @@ static NSDateFormatterStyle         __timeStyle             = NSDateFormatterSho
 {
     [[NSDate sharedRecursiveLock] lock];
     NSInteger dayOfYear = [[NSDate mt_calendar] ordinalityOfUnit:NSDayCalendarUnit
-                                                           inUnit:NSYearCalendarUnit
-                                                          forDate:self];
+                                                          inUnit:NSYearCalendarUnit
+                                                         forDate:self];
 	[[NSDate sharedRecursiveLock] unlock];
     return dayOfYear;
 }
@@ -390,8 +390,8 @@ static NSDateFormatterStyle         __timeStyle             = NSDateFormatterSho
 {
 	[[NSDate sharedRecursiveLock] lock];
     NSInteger weekdayOfWeek = [[NSDate mt_calendar] ordinalityOfUnit:NSWeekdayCalendarUnit
-                                                               inUnit:NSWeekCalendarUnit
-                                                              forDate:self];
+                                                              inUnit:NSWeekCalendarUnit
+                                                             forDate:self];
 	[[NSDate sharedRecursiveLock] unlock];
     return weekdayOfWeek;
 }
@@ -1403,45 +1403,45 @@ static NSDateFormatterStyle         __timeStyle             = NSDateFormatterSho
 - (NSString *)mt_stringFromDateWithGreatestComponentsForSecondsPassed:(NSTimeInterval)interval
 {
 	[[NSDate sharedRecursiveLock] lock];
-
+    
     NSMutableString *s = [NSMutableString string];
     NSTimeInterval absInterval = interval > 0 ? interval : -interval;
-
+    
     NSInteger months = floor(absInterval / (float)MTDateConstantSecondsInMonth);
     if (months > 0) {
         [s appendFormat:NSLocalizedString(@"%ld months, ", nil), (long)months];
         absInterval -= months * MTDateConstantSecondsInMonth;
     }
-
+    
     NSInteger days = floor(absInterval / (float)MTDateConstantSecondsInDay);
     if (days > 0) {
         [s appendFormat:NSLocalizedString(@"%ld days, ", nil), (long)days];
         absInterval -= days * MTDateConstantSecondsInDay;
     }
-
+    
     NSInteger hours = floor(absInterval / (float)MTDateConstantSecondsInHour);
     if (hours > 0) {
         [s appendFormat:NSLocalizedString(@"%ld hours, ", nil), (long)hours];
         absInterval -= hours * MTDateConstantSecondsInHour;
     }
-
+    
     NSInteger minutes = floor(absInterval / (float)MTDateConstantSecondsInMinute);
     if (minutes > 0) {
         [s appendFormat:NSLocalizedString(@"%ld minutes, ", nil), (long)minutes];
         absInterval -= minutes * MTDateConstantSecondsInMinute;
     }
-
+    
     NSInteger seconds = absInterval;
     if (seconds > 0) {
         [s appendFormat:NSLocalizedString(@"%ld seconds, ", nil), (long)seconds];
     }
-
+    
     NSString *preString = [s stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" ,"]];
     NSString *str = (interval < 0 ?
                      [NSString stringWithFormat:NSLocalizedString(@"%@ before", nil), preString] :
                      [NSString stringWithFormat:NSLocalizedString(@"%@ after", nil), preString]);
 	[[NSDate sharedRecursiveLock] unlock];
-    return str;
+    return NSLocalizedString(str, nil);
 }
 
 - (NSString *)mt_stringFromDateWithGreatestComponentsUntilDate:(NSDate *)date
@@ -1450,38 +1450,38 @@ static NSDateFormatterStyle         __timeStyle             = NSDateFormatterSho
     NSMutableArray *s = [NSMutableArray array];
     NSTimeInterval interval = [date timeIntervalSinceDate:self];
     NSTimeInterval absInterval = interval > 0 ? interval : -interval;
-
+    
     NSInteger months = floor(absInterval / (float)MTDateConstantSecondsInMonth);
     if (months > 0) {
         NSString *formatString = months == 1 ? NSLocalizedString(@"%ld month", nil) : NSLocalizedString(@"%ld months", nil);
         [s addObject:[NSString stringWithFormat:formatString, (long)months]];
         absInterval -= months * MTDateConstantSecondsInMonth;
     }
-
+    
     NSInteger days = floor(absInterval / (float)MTDateConstantSecondsInDay);
     if (days > 0) {
         NSString *formatString = days == 1 ? NSLocalizedString(@"%ld day", nil) : NSLocalizedString(@"%ld days", nil);
         [s addObject:[NSString stringWithFormat:formatString, (long)days]];
         absInterval -= days * MTDateConstantSecondsInDay;
     }
-
+    
     NSInteger hours = floor(absInterval / (float)MTDateConstantSecondsInHour);
     if (hours > 0) {
         NSString *formatString = hours == 1 ? NSLocalizedString(@"%ld hour", nil) : NSLocalizedString(@"%ld hours", nil);
         [s addObject:[NSString stringWithFormat:formatString, (long)hours]];
         absInterval -= hours * MTDateConstantSecondsInHour;
     }
-
+    
     NSInteger minutes = floor(absInterval / (float)MTDateConstantSecondsInMinute);
     if (minutes > 0) {
         NSString *formatString = minutes == 1 ? NSLocalizedString(@"%ld minute", nil) : NSLocalizedString(@"%ld minutes", nil);
         [s addObject:[NSString stringWithFormat:formatString, (long)minutes]];
     }
-
+    
     NSString *preString = [s componentsJoinedByString:@", "];
     NSString *string = interval < 0 ? [NSString stringWithFormat:NSLocalizedString(@"%@ ago", nil), preString] : [NSString stringWithFormat:NSLocalizedString(@"%@ remaining", nil), preString];
 	[[NSDate sharedRecursiveLock] unlock];
-    return string;
+    return NSLocalizedString(string, nil);
 }
 
 
@@ -1495,11 +1495,11 @@ static NSDateFormatterStyle         __timeStyle             = NSDateFormatterSho
 	[[NSDate sharedRecursiveLock] lock];
     NSInteger days = [endDate mt_daysSinceDate:startDate];
     NSMutableArray *datesArray = [NSMutableArray array];
-
+    
     for (int i = 0; i < days; i++) {
         [datesArray addObject:[startDate mt_dateDaysAfter:i]];
     }
-
+    
     NSArray *array = [NSArray arrayWithArray:datesArray];
 	[[NSDate sharedRecursiveLock] unlock];
     return array;
@@ -1607,23 +1607,23 @@ static NSDateFormatterStyle         __timeStyle             = NSDateFormatterSho
 + (void)mt_prepareDefaults
 {
     NSCalendar *currentCalendar = (NSCalendar *)[NSCalendar currentCalendar];
-
+    
     if (!__calendarType) {
         __calendarType = [currentCalendar calendarIdentifier];
     }
-
+    
     if (__weekNumberingSystem == 0) {
         __weekNumberingSystem = [currentCalendar minimumDaysInFirstWeek];
     }
-
+    
     if (__firstWeekday == 0) {
         __firstWeekday = [currentCalendar firstWeekday];
     }
-
+    
     if (!__locale) {
         __locale = [NSLocale currentLocale];
     }
-
+    
     if (!__timeZone) {
         __timeZone = [NSTimeZone localTimeZone];
     }
@@ -1632,27 +1632,27 @@ static NSDateFormatterStyle         __timeStyle             = NSDateFormatterSho
 + (NSCalendar *)mt_calendar
 {
     [self mt_prepareDefaults];
-
+    
     if (!__calendar) {
         __calendar                            = [[NSCalendar alloc] initWithCalendarIdentifier:__calendarType];
         __calendar.firstWeekday               = __firstWeekday;
         __calendar.minimumDaysInFirstWeek     = (NSInteger)__weekNumberingSystem;
         __calendar.timeZone                   = __timeZone;
     }
-
+    
     return __calendar;
 }
 
 + (NSDateComponents *)mt_components
 {
     [self mt_prepareDefaults];
-
+    
     if (!__components) {
         __components = [[NSDateComponents alloc] init];
         __components.calendar = [self mt_calendar];
         if (__timeZone) __components.timeZone = __timeZone;
     }
-
+    
     [__components setEra:NSUndefinedDateComponent];
     [__components setYear:NSUndefinedDateComponent];
     [__components setMonth:NSUndefinedDateComponent];
@@ -1664,7 +1664,7 @@ static NSDateFormatterStyle         __timeStyle             = NSDateFormatterSho
     [__components setWeekday:NSUndefinedDateComponent];
     [__components setWeekdayOrdinal:NSUndefinedDateComponent];
     [__components setQuarter:NSUndefinedDateComponent];
-
+    
     return __components;
 }
 
